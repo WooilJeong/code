@@ -94,9 +94,9 @@ def _extract():
     driver.quit()
 
     # 변환
-    법정동코드_경로 = glob.glob(f"{DOWNLOAD_PATH_SUB}KIKcd_B*.xlsx")[0]
-    행정동코드_경로 = glob.glob(f"{DOWNLOAD_PATH_SUB}KIKcd_H*.xlsx")[0]
-    혼합코드_경로 = glob.glob(f"{DOWNLOAD_PATH_SUB}KIKmix*.xlsx")[0]
+    법정동코드_경로 = glob.glob(f"{DOWNLOAD_PATH_SUB}*/KIKcd_B*.xlsx")[0]
+    행정동코드_경로 = glob.glob(f"{DOWNLOAD_PATH_SUB}*/KIKcd_H*.xlsx")[0]
+    혼합코드_경로 = glob.glob(f"{DOWNLOAD_PATH_SUB}*/KIKmix*.xlsx")[0]
 
     법정동코드 = pd.read_excel(법정동코드_경로, dtype=str)
     행정동코드 = pd.read_excel(행정동코드_경로, dtype=str)
