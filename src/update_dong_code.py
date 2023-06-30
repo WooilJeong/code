@@ -71,7 +71,7 @@ def _extract():
     _url = "https://www.mois.go.kr"
 
     # 파일 URL 찾기
-    file_data = soup.select(f"#print_area > form > div.table_detail_area > dl.download > dd > div > ul > li:nth-child(1) > a")
+    file_data = soup.select(f"#print_area > form > div.table_detail_area > dl.download > dd > div > ul > li:nth-child({idx}) > a")
     file_link = file_data[0]['href']
     print(file_link)
 
