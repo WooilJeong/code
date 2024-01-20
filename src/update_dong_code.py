@@ -6,13 +6,12 @@ import shutil
 import zipfile
 import datetime
 import requests
-import numpy as np
 import pandas as pd
 from pathlib import Path
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
-DOWNLOAD_PATH = "./code"
+DOWNLOAD_PATH = os.path.join(".", "src", "code")
 CHROMEDRIVER_PATH = "C:/chromedriver/chromedriver.exe"
 
 
@@ -21,11 +20,11 @@ def _extract():
     원천 데이터 추출
     """
     # 다운로드 경로 생성
-    DOWNLOAD_PATH_SUB = DOWNLOAD_PATH + "/code_dong/"
-    Path(DOWNLOAD_PATH).mkdir(exist_ok=True)
+    DOWNLOAD_PATH_SUB = os.path.join(DOWNLOAD_PATH, "code_dong")
+    os.makedirs(DOWNLOAD_PATH, exist_ok=True)
     if os.path.exists(DOWNLOAD_PATH_SUB):
         shutil.rmtree(DOWNLOAD_PATH_SUB)
-    Path(DOWNLOAD_PATH_SUB).mkdir(exist_ok=True)
+    os.makedirs(DOWNLOAD_PATH_SUB, exist_ok=True)
     # 크롬드라이버 옵션 지정
     options = webdriver.ChromeOptions()
     options.add_argument('--headless')
@@ -82,13 +81,14 @@ def _extract():
     file_url = f"{_url}{file_link}"
     r = requests.get(file_url, stream=True)
 
-    with open(file_name, 'wb') as f:
+    file_path = os.path.join(DOWNLOAD_PATH_SUB, file_name)
+    with open(file_path, 'wb') as f:
         for chunk in r.iter_content(chunk_size=1024): 
             if chunk:
                 f.write(chunk)
 
     # 압축 해제
-    with zipfile.ZipFile(file_name, 'r') as zip_ref:
+    with zipfile.ZipFile(file_path, 'r') as zip_ref:
         zip_ref.extractall(DOWNLOAD_PATH_SUB)
 
     driver.quit()
@@ -131,17 +131,18 @@ def _extract():
         "data": 혼합코드.to_dict(),
     }
 
-    with open(f"{DOWNLOAD_PATH_SUB}code_bdong.json", "w") as f:
+    # 데이터프레임을 딕셔너리로 변환 및 JSON 파일 저장
+    json_path_bdong = os.path.join(DOWNLOAD_PATH_SUB, "code_bdong.json")
+    with open(json_path_bdong, "w") as f:
         f.write(json.dumps(법정동코드_딕셔너리))
-        f.close()
 
-    with open(f"{DOWNLOAD_PATH_SUB}code_hdong.json", "w") as f:
+    json_path_hdong = os.path.join(DOWNLOAD_PATH_SUB, "code_hdong.json")
+    with open(json_path_hdong, "w") as f:
         f.write(json.dumps(행정동코드_딕셔너리))
-        f.close()
 
-    with open(f"{DOWNLOAD_PATH_SUB}code_hdong_bdong.json", "w") as f:
+    json_path_hdong_bdong = os.path.join(DOWNLOAD_PATH_SUB, "code_hdong_bdong.json")
+    with open(json_path_hdong_bdong, "w") as f:
         f.write(json.dumps(혼합코드_딕셔너리))
-        f.close()
 
 if __name__ == "__main__":
     _extract()
