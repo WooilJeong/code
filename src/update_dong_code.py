@@ -18,6 +18,12 @@ def _extract():
     """
     원천 데이터 추출
     """
+    # './code/' 경로 하위의 모든 파일 삭제 (단, 'code_dong' 디렉토리 제외)
+    for file in os.listdir(DOWNLOAD_PATH):
+        file_path = os.path.join(DOWNLOAD_PATH, file)
+        if os.path.isfile(file_path) and file != "code_dong":
+            os.remove(file_path)
+
     # 다운로드 경로 생성
     DOWNLOAD_PATH_SUB = os.path.join(DOWNLOAD_PATH, "code_dong")
     os.makedirs(DOWNLOAD_PATH, exist_ok=True)
