@@ -10,9 +10,17 @@ import pandas as pd
 from pathlib import Path
 from bs4 import BeautifulSoup
 from selenium import webdriver
+import platform
 
 DOWNLOAD_PATH = os.path.join(".", "code")
-CHROMEDRIVER_PATH = "C:/chromedriver/chromedriver.exe"
+
+# Windows 일 경우
+if platform.system() == "Windows":
+    CHROMEDRIVER_PATH = "C:/chromedriver/chromedriver.exe"
+# macOS 일 경우
+elif platform.system() == "Darwin":
+    CHROMEDRIVER_PATH = "/Users/wooiljeong/chromedriver"
+
 
 def _extract():
     """
